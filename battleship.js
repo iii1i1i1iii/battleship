@@ -42,3 +42,4 @@ view.displayMiss("25");
 view.displayHit("26");
 
 view.displayMessege("Tap tap, is this thing on?");
+// ss
