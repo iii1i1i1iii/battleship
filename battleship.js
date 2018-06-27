@@ -59,6 +59,9 @@ function parseGuesses(guess) {
       firstChar = guess.charAt(0);
       var row = alphabet.indexOf(firstChar);
       var column = guess.charAt(1);
+      if (isNaN(row) || isNaN(column)) {
+        alert("Oops, that's")
+      }
     }
 }
 
