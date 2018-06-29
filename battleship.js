@@ -24,13 +24,12 @@ var model = {
     for (var i = 0; i < this.numShips; i++) {
       var ship = this.ships[i];
       var index = ship.locations.indexOf(guess);
-      console.log(index);
         if (index >= 0) {
-          ship.hits = "hit";
+          ship.hits[index] = "hit";
           view.displayHit(guess);
           view.displayMessege("HIT");
           if (this.isSunk(ship)) {
-            view.displayMessege("You sunk my battleship");
+            view.displayMessege("You sunk my battleship!");
             this.shipsSunk++;
           }
           return true;
@@ -41,17 +40,40 @@ var model = {
     return false;
   },
   isSunk: function(ship) {
-
+    for (var i = 0; i < this.shipLenght; i++) {
+      if (ship.hits[i] !== "hit") {
+        return false;
+      }
+    }
+    return true;
+  },
+  generateShipLocations: function () {
+    var locations;
+    for (var i = 0; i < this.numShips; i++) {
+      do {
+        locations = this.genereteShip();
+      } while (this.collision(location));
+        this.ships[i].location = locations
+      }
+    }
   }
 };
 var controller = {
   guesses: 0,
-  processGuesses: function (guess) {
-    // Kod metoda
+  processGuess: function (guess) {
+    var location = parseGuess(guess);
+    if (location) {
+      this.guesses++;
+      var hit = model.fire(location);
+      if (hit && model.shipsSunk === model.numShips) {
+        view.displayMessege("You sunk all my battleship, in " + this.guesses + " guesses.");
+        alert("You win! If you want to play again than refresh the page ;)")
+      }
+    }
   }
-}
+};
 
-function parseGuesses(guess) {
+function parseGuess(guess) {
     var alphabet = ["A", "B", "C", "D", "E", "F", "G"];
     if (guess == null || guess.length !== 2) {
       alert("Opps, please enter a letter and number on the board.")
@@ -60,24 +82,68 @@ function parseGuesses(guess) {
       var row = alphabet.indexOf(firstChar);
       var column = guess.charAt(1);
       if (isNaN(row) || isNaN(column)) {
-        alert("Oops, that's")
+        alert("Oops, that isn't on the board.");
+      }else if (row < 0 || row >= model.boardSize || column < 0 || column >= model.boardSize) {
+        alert("Oops, that's off the board!");
+      }else {
+        return row + column;
       }
+      return null;
     }
+};
+
+// controller.processGuess("A0");
+//
+// controller.processGuess("A6");
+// controller.processGuess("B6");
+// controller.processGuess("C6");
+//
+// controller.processGuess("C4");
+// controller.processGuess("D4");
+// controller.processGuess("E4");
+//
+// controller.processGuess("B0");
+// controller.processGuess("B1");
+// controller.processGuess("B2");
+
+function init() {
+  var fireButton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
+  var geussInput = document.getElementById("guessInput");
+  guessInput.onkeypress = handleKeyPress;
 }
+function handleFireButton() {
+  var guessInput = document.getElementById("guessInput");
+  var guess = guessInput.value;
+  controller.processGuess(guess);
+  guessInput.value = "";
+}
+function handleKeyPress(e) {
+  var fireButton = document.getElementById("fireButton");
+  if (e.keyCode === 13) {
+    fireButton.click();
+    return false;
+  }
+}
+window.onload = init;
 
-model.fire("53");
+// view.displayMessege("Tap tap, is this thing on?");
 
-model.fire("06");
-model.fire("16");
-model.fire("26");
+// model.fire("53");
+//
+// model.fire("06");
+// model.fire("16");
+// model.fire("26");
+//
+// model.fire("34");
+// model.fire("24");
+// model.fire("44");
+//
+// model.fire("12");
+// model.fire("11");
+// model.fire("10");
 
-model.fire("34");
-model.fire("24");
-model.fire("44");
 
-model.fire("12");
-model.fire("11");
-model.fire("10");
 
 // view.displayMiss("00");
 // view.displayHit("34");
@@ -85,5 +151,3 @@ model.fire("10");
 // view.displayHit("12");
 // view.displayMiss("25");
 // view.displayHit("26");
-
-view.displayMessege("Tap tap, is this thing on?");
