@@ -53,32 +53,30 @@ var model = {
       do {
         locations = this.generateShip();
       } while (this.collision(locations));
-        this.ships[i].location = locations;
+        this.ships[i].locations = locations;
       }
     },
   generateShip: function () {
     var direction = Math.floor(Math.random() * 2);
     var row, col;
     if (direction === 1) {
-      // coming soon
+      row = Math.floor(Math.random() * this.boardSize);
+      col = Math.floor(Math.random() * (this.boardSize - this.shipLenght));
     }else {
-      // coming soon
+      row = Math.floor(Math.random() * (this.boardSize - this.shipLenght));
+      col = Math.floor(Math.random() * this.boardSize);
     }
     var newShipLocations = [];
     for (var i = 0; i < this.shipLenght; i++) {
       if (direction === 1) {
-        row = Math.floor(Math.random() * this.boardSize);
-        col = Math.floor(Math.random() * (this.boardSize - this.shipLenght));
         newShipLocations.push(row + "" + (col + i));
       }else {
-        row = Math.floor(Math.random() * (this.boardSize - this.shipLenght));
-        col = Math.floor(Math.random() * this.boardSize);
         newShipLocations.push((row + i) + "" + col);
       }
     }
     return newShipLocations;
   },
-  collision: function () {
+  collision: function (locations) {
     for (var i = 0; i < this.numShips; i++) {
       var ship = model.ships[i];
         for (var j = 0; j < locations.length; j++) {

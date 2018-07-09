@@ -6,15 +6,30 @@
   </head>
   <body>
     <script>
-    var newObject = {
-      newF: function() {
+      function fibo(m) {
+        var fiboCount = 0;
+        var fiboStepLast = 0;
+        var fiboStepPrevious = 0;
+        var fiboStepNew = 1;
+        for (var i = 0; i < m; i = i + fiboStepPrevious) {
+          fiboCount++;
+          fiboStepLast = fiboStepPrevious
+          fiboStepPrevious = fiboStepNew;
+          fiboStepNew = fiboStepLast + fiboStepPrevious;
+        }
+        return fiboCount;
+      };
+      console.log(fibo(20) + " fibo = 20");
+      console.log(fibo(22) + " fibo = 22");
+      var kozlik = prompt("Number");
+      var kozlik1 = fibo(kozlik);
+      alert(kozlik1);
 
-      }
-    }
-    console.log(typeof newObject.newF);
-    //AddSomeInfo for push on github ))
-    //AddSomeInfo for push on github from Home))
-    //LASTTEST(I hope)123123
     </script>
   </body>
 </html>
+0 1 1 2 3 5 8 13 21 34
+
+ l=0 p=1 n=0
+ l=1 p=2 n=0
+ l=2 p=
